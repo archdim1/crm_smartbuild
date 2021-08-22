@@ -1,1 +1,1 @@
-web: gunicorn crm_smartbuild.wsgi --log-file -
+web: gunicorn crm_belousov.wsgi --log-file -
