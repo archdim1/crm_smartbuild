@@ -1,0 +1,41 @@
+{% extends "base_test.html" %}
+{% block title %}
+<title>Информация о взаимодействии</title>
+{% endblock %}
+{% block content %}
+{% if user.is_manager or user.is_admin %}
+<ul>
+<h3><u><font color="#4C5866">{{ interaction.channel_of_reference }} {{ interaction.reference_obj }}
+    {% if interaction.company %}
+        - {{ interaction.company }}
+    {% endif %}</font></u></h3>
+    <p>&#10000; Проект - <a href="/company/project/{{ interaction.project.pk }}/"><font color="##4C5866">{{ interaction.project }}</font></a></p>
+<p><strong><font color="#ED760E">&#9734;</font></strong> Проект компании - <a href="/company/{{ interaction.project.company.pk }}/">
+    <font color="#4C5866">{{ interaction.project.company }}</font></a></p>
+<p><strong><font color="#ED760E">&#9863;</font></strong> Заказчик проекта - <a href="/customer/{{ interaction.project.customer.pk }}/">
+    <font color="#228B22">{{ interaction.project.customer.user.first_name }}
+        {{ interaction.project.customer.user.last_name }}</font></a></p><br>
+{% if interaction.company %}
+    <p><strong><font color="#ED760E">&#9776;</font> <a href="/company/{{ interaction.company.pk }}/interactions/"><font color="#4C5866">
+        Список всех взаимодействий с компанией - <u>{{ interaction.company }}</u></font></a></strong></p>
+{% endif %}<hr>
+  <ul>
+    <li>&#11078; Менеджер - <u>{{ interaction.user.first_name }} {{ interaction.user.last_name }}</u></li>
+      <li>Рейтинг взаимодействия - <u><font color="#228B22">{{ interaction.rating }}</font></u></li><hr/>
+    <li>{{ interaction.description|safe }}</li><hr/>
+    {% if user == interaction.user or user.is_admin %}
+      <li><strong><a href="{% url 'interaction_update' interaction.pk %}"><font color="#ED760E">Редактировать запись о взаимодействии</font></a></strong></li>
+      <li><strong><a href="{% url 'interaction_delete' interaction.pk %}"><font color="#ED760E">Удалить запись о взаимодействии</font></a></strong></li><br>
+    {% endif %}
+    <p>Дата создания записи - {{ interaction.created_date|date:'d.m.Y' }}</p>
+      <hr>
+  </ul>
+</ul>
+{% else %}
+<ul><strong><p><font color="red">&#9940; У вас нет доступа к этой странице.</font>
+    Пожалуйста, <u><a href="{% url 'login'%}?next={{request.path}}">войдите</a>
+    </u> в систему с учетной записью, у которой есть доступ.</p></strong></ul>
+{% endif %}
+{% endblock %}
+
+

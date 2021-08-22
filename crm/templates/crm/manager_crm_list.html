@@ -1,0 +1,37 @@
+{% extends "base_test.html" %}
+{% block title %}
+<title>Список CRM-менеджеров</title>
+{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+<ul>
+    <h3><u><font color="#4C5866">Список CRM-менеджеров</font></u></h3>
+
+<select onchange="window.location.href = this.options[this.selectedIndex].value">
+	<option value="">Сортировка списка CRM-менеджеров</option>
+	<option value="?sort=name">По имени</option>
+	<option value="?sort=-name">По имени в обратном порядке</option>
+</select><hr/></p>
+    {% for object in managercrm_list %}
+        <ul>
+            <div class="media">
+                {% if object.user.photo %}
+                  <img class="d-flex mr-3" src="{{ object.user.photo.url }}" width=100 alt="аватарка">
+                {% else %}
+                  <img class="d-flex mr-3" src="/media/default1.jpg" width=100 alt="аватарка">
+                {% endif %}
+              <div class="media-body">
+                  <strong><u><a href="/manager_crm/{{ object.pk }}/"><font color="#4C5866">&#11078; {{ object.user.first_name }} {{ object.user.last_name }}</font></a></u></strong>
+                  <p>&#9743; Телефон : {{ object.user.phone_number }}</p>
+                  <p>&#9993; E-mail : {{ object.user.email }}</p>
+              </div>
+            </div>
+            <hr>
+        </ul>
+    {% endfor %}
+{% else %}
+<ul><strong><p><font color="red">&#9940; У вас нет доступа к этой странице.</font>
+    Пожалуйста, <u><a href="{% url 'login'%}?next={{request.path}}">войдите</a>
+    </u> в систему с учетной записью, у которой есть доступ.</p></strong></ul>
+{% endif %}
+{% endblock %}

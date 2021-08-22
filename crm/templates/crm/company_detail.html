@@ -1,0 +1,53 @@
+{% extends "base_test.html" %}
+{% block title %}
+<title>Информация о компании</title>
+{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+<ul>
+  <h3><u><font color="#4C5866">{{ company.title  }}</font></u></h3>
+  <ul>
+    <p><strong>&#10000; <a href="projects/"><font color="#4C5866">Список проектов компании</font></a></strong></p>
+    {% if user.is_manager or user.is_admin %}
+    <p><strong><font color="#ED760E">&#9776; </font><a href="interactions/"><font color="#4C5866">Список взаимодействий компании</font></a></strong></p>
+    {% endif %}<hr/>
+    <li>{{ company.description|safe }}</li>
+    <br>
+    <li>Директор - {{ company.leader_name }} </li><hr>
+    <li>Контактные данные:
+      <ul>
+        <p>&#9872; Адрес компании : </p>
+            <ul><p>{{ company.address }}</p></ul>
+        <p>&#9743; Телефоны :
+        {% for phone in company.phone_set.all %}
+          <ul><li>{{ phone.phone_number }}</li></ul>
+        {% endfor %}
+        </p>
+        <p>&#9993; E-mails :
+        {% for email in company.email_set.all %}
+          <ul><li>{{ email.email_address }}</li></ul>
+        {% endfor %}
+        </p>
+        <p>&#9990; Контактные лица :
+        {% for manager in company.manager_set.all %}
+          <ul><li>{{ manager.manager_name }}</li></ul>
+        {% endfor %}
+        </p>
+      </ul><hr/>
+    </li>
+    {% if user.is_manager or user.is_admin %}
+    <li><strong><a href="{% url 'company_update' company.pk %}"><font color="#ED760E">Редактировать запись о компании</font></a></strong></li>
+    <li><strong><a href="{% url 'company_delete' company.pk %}"><font color="#ED760E">Удалить запись о компании</font></a></strong></li><br>
+    <p>Дата создания записи о компании - {{ company.created_date|date:'d.m.Y' }}</p>
+    <p>Дата последнего изменения записи о компании - {{ company.updated_date|date:'d.m.Y' }}</p>
+    <hr>
+    {% endif %}
+  </ul>
+
+
+{% else %}
+<ul><strong><p><font color="red">&#9940; У вас нет доступа к этой странице.</font>
+    Пожалуйста, <u><a href="{% url 'login'%}?next={{request.path}}">войдите</a>
+    </u> в систему с учетной записью, у которой есть доступ.</p></strong></ul>
+{% endif %}
+{% endblock %}

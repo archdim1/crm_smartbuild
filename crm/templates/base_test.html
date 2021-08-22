@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+    <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #4C5866;">
+      <ul><a class="navbar-brand" href="{% url 'companies' %}"><font color="#EFA94A"><h2>&#9636; SmartBuild</h2></font></a>
+          {% if user.is_authenticated %}
+          <h6><strong>  <a href="/user/profile/"><font color="#EFA94A">&#10026; {{ user.username }} </font></a></strong></h6>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          {% if user.is_manager or user.is_admin %}
+          <li class="nav-item ">
+              <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle"
+                          type="button" style="color: #EFA94A" id="dropdownMenu1" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false" >
+                    Панель менеджера
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <a class="dropdown-item" href="{% url 'customer_list' %}">Список всех заказчиков</a>
+                    <a class="dropdown-item" href="{% url 'interactions' %}">Список всех взаимодействий</a>
+                    <a class="dropdown-item" href="{% url 'interaction_create' %}">Создать запись о новом взаимодействии</a>
+                    <a class="dropdown-item" href="{% url 'project_create' %}">Создать запись о новом проекте</a>
+                    <a class="dropdown-item" href="{% url 'company_create' %}">Создать запись о новой компании</a>
+                  </div>
+              </div>
+          </li>
+          {% endif %}
+          <li class="nav-item ">
+            <a class="nav-link " href="/user/profile/"><strong><font color="#EFA94A">&#9655; </font></strong><font color="#9DB1CC">Личный кабинет</font></a>
+          </li>
+          {% if user.is_admin %}
+          <li class="nav-item " style="color: #9DB1CC">
+            <a class="nav-link" href="/admin/"><strong><font color="#EFA94A">&#9655; </font></strong><font color="#9DB1CC">Административная панель</font></a>
+          </li>
+          {% endif %}
+          <li class="nav-item" >
+            <a class="nav-link" href="{% url 'companies' %}"><strong><font color="#EFA94A">&#9655; </font></strong><font color="#9DB1CC">Home (Список компаний)</font></a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link " href="{% url 'projects' %}"><strong><font color="#EFA94A">&#9655; </font></strong><font color="#9DB1CC">Список всех проектов</font></a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link " href="{% url 'manager_crm_list' %}"><strong><font color="#EFA94A">&#9655; </font></strong><font color="#9DB1CC">Список CRM-менеджеров</font></a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link " href="/about/"><strong><font color="#EFA94A">&#9655; </font></strong><font color="#9DB1CC">О нас</font></a>
+          </li>
+           <li class="nav-item ">
+            <a class="nav-link " href="{% url 'logout'%}?next={{request.path}}"><strong><font color="#ED760E">&#10005; </font><font color="#ED760E">Выход</strong></font></a>
+          </li>
+        </ul>
+      </div></ul>
+        {% else %}
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item" >
+            <a class="nav-link" href="{% url 'companies' %}"><strong><font color="#EFA94A">&#9655; </font></strong><font color="#9DB1CC">Home (Список компаний)</font></a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link " href="/about/"><strong><font color="#EFA94A">&#9655; </font></strong><font color="#9DB1CC">О нас</font></a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link " href="{% url 'login'%}?next={{request.path}}"><strong><font color="#ED760E">&#10003; </font><font color="#ED760E">Вход</strong></font></a>
+          </li>
+        </div></ul>
+        {% endif %}
+    </nav>
+    <br>
+        {% block content %}
+        {% endblock %}
+        </ul>
+        {% block pagination %}
+          {% if is_paginated %}
+              <ul><div class="pagination">
+                  <span class="page-links">
+                      {% if page_obj.has_previous %}
+                          <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}"><font color="#ED760E">предыдущая</font></a>
+                      {% endif %}
+                      <span class="page-current">
+                          Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+                      </span>
+                      {% if page_obj.has_next %}
+                      <a href="{{ request.path }}?page={{ page_obj.next_page_number }}{% if current_order %}&sort={{current_order}}{%endif%}"><font color="#ED760E">следующая</font></a>
+                      {% endif %}
+                  </span>
+              </div>
+              </ul>
+          {% endif %}
+        {% endblock %}
+  </div>
+  </body>
+</html>

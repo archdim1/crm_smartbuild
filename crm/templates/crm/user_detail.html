@@ -1,0 +1,60 @@
+{% extends "base_test.html" %}
+{% block title %}
+<title>Личный кабинет позьзователя</title>
+{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+<ul>
+<div class="media">
+{% if user.photo %}
+  <img class="d-flex mr-3" src="{{ user.photo.url }}" width=200 alt="аватарка">
+{% else %}
+  <img class="d-flex mr-3" src="/media/default1.jpg" width=200 alt="аватарка">
+{% endif %}
+  <div class="media-body">
+    <h3 class="mt-0"><u><font color="#ED760E">{{ user.username }}</font></u></h3>
+    <h4>{{ user.first_name }} {{ user.last_name }}</h4>
+      <p>Статус на сайте -
+    {% if user.is_manager %}
+        <font color="#228B22"><u>Менеджер</u></font>
+    {% elif user.is_customer %}
+        <font color="#228B22"><u>Заказчик</u></font>
+    {% elif user.is_admin %}
+        <font color="#228B22"><u>Админ</u></font>
+    {% else %}
+        <font color="#228B22"><u>Пользователь</u></font>
+    {% endif %}</p><hr>
+      <p>&#9743; Телефон : {{ user.phone_number }}</p>
+      <p>&#9993; E-mail : {{ user.email }}</p>
+  </div>
+</div>
+<ul class="nav nav-tabs">
+  <li class="btn-group dropright" >
+    <a class="nav-link dropdown-toggle" data-toggle="dropdown"
+       href="#" role="button" aria-haspopup="true" aria-expanded="false">
+       <font color="#4C5866">Редактировать данные учетной записи</font></a>
+    <div class="dropdown-menu">
+      {% if user.is_manager %}
+      <a class="dropdown-item" href="/user_managercrm/update/">Редактировать личную информацию</a>
+      {% elif user.is_customer %}
+      <a class="dropdown-item" href="/user_customer/update/">Редактировать личную информацию</a>
+      {% else %}
+      <a class="dropdown-item" href="/user/update/">Редактировать личную информацию</a>
+      {% endif %}
+      <a class="dropdown-item" href="/user/change-password/">Сменить пароль учетной записи</a>
+    </div>
+  </li>
+</ul>
+    {% if user.is_manager %}
+    <br><a href="/user/interactions/"><strong><font color="#ED760E">&#9655;</strong> Список всех взаимодействий добавленных пользователем</font></a>
+    {% elif user.is_customer %}
+    <br><a href="/customer/project_list/"><strong><font color="#ED760E">&#9655;</strong> Список всех проектов позьзователя</font></a>
+    {% endif %}
+{% else %}
+<ul><strong><p><font color="red">&#9940; У вас нет доступа к этой странице.</font>
+    Пожалуйста, <u><a href="{% url 'login'%}?next={{request.path}}">войдите</a>
+    </u> в систему с учетной записью, у которой есть доступ.</p></strong></ul>
+{% endif %}
+{% endblock %}
+
+

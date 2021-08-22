@@ -1,0 +1,42 @@
+{% extends "base_test.html" %}
+{% block title %}
+<title>Информация о проекте</title>
+{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+<ul>
+  <h3><u><font color="#4C5866">{{ project.name }}</font></u></h3>
+<p><strong><font color="#ED760E">&#9734;</font></strong> Проект компании - <a href="/company/{{ project.company.pk }}/">
+  <font color="#4C5866">{{ project.company }}</font></a></p>
+{% if user.is_manager or user.is_admin or user.pk == project.customer.user.pk  %}
+<p><strong><font color="#ED760E">&#9863;</font></strong> Заказчик проекта - <a href="/customer/{{ project.customer.pk }}/">
+  <font color="#228B22">{{ project.customer.user.first_name }}
+    {{ project.customer.user.last_name }}</font></a></p>
+{% endif %}
+{% if user.is_manager or user.is_admin %}
+<p><strong><font color="#ED760E">&#9776;</font> <a href="interactions/"><font color="#4C5866">
+  Список взаимодействий по проекту</font></a></strong></p>
+{% endif %}<br>
+  <ul>
+    <li>Статус проекта - <u><font color="#228B22">{{ project.status_pro }}</font></u></li><hr/>
+
+    {% if user.is_manager or user.is_admin or user.pk == project.customer.user.pk  %}
+    <li>{{ project.description|safe }}</li>
+    <li>Стоимость проекта - ${{ project.price }}</li><hr/>
+    {% endif %}
+    {% if user.is_manager or user.is_admin %}
+    <li><strong><a href="{% url 'project_update' project.pk %}"><font color="#ED760E">Редактировать запись о проекте</font></a></strong></li>
+    <li><strong><a href="{% url 'project_delete' project.pk %}"><font color="#ED760E">Удалить запись о проекте</font></a></strong></li><br>
+    {% endif %}
+    {% if user.is_manager or user.is_admin or user.pk == project.customer.user.pk  %}
+    <p>Дата начала проекта - {{ project.start_date|date:'d.m.Y' }}</p>
+    <p>Дата окончания проекта - {{ project.end_date|date:'d.m.Y' }}</p>
+    {% endif %}
+  </ul>
+</ul>
+{% else %}
+<ul><strong><p><font color="red">&#9940; У вас нет доступа к этой странице.</font>
+    Пожалуйста, <u><a href="{% url 'login'%}?next={{request.path}}">войдите</a>
+    </u> в систему с учетной записью, у которой есть доступ.</p></strong></ul>
+{% endif %}
+{% endblock %}

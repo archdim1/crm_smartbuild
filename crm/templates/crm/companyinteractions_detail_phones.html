@@ -1,0 +1,33 @@
+{% extends "base_test.html" %}
+{% block title %}
+<title xmlns="http://www.w3.org/1999/html">Телефонные звонки с компанией</title>
+{% endblock %}
+{% block content %}
+{% if user.is_manager or user.is_admin %}
+<ul>
+    <h3><u><font color="#4C5866">Телефонные звонки с компанией - </font><a href="{{ object.get_absolute_url }}">
+        <font color="#ED760E">{{ company.title  }}</font></a></u></h3>
+    <ul><p><a href="/company/{{ company.pk }}/interactions/"><strong><font color="#ED760E">&#9665;</strong>
+        Список всех взаимодействий компании</font></a></p>
+      <hr/>
+{% for interaction in object_list %}
+      {% if interaction.channel_of_reference == 'Телефонный звонок' %}
+        <ul>
+            <li><h4><strong><a href="/interaction/{{interaction.pk}}"><font color="#4C5866">{{ interaction.channel_of_reference }}</font>
+                </a></strong></h4></li>
+            <ul>
+              <p>&#10000; Проект - {{ interaction.project }}</p>
+              <p>&#9734; Проект компании - {{ interaction.project.company }}</p>
+              <p>&#11078; Менеджер - <u>{{ interaction.user.first_name }} {{ interaction.user.last_name }}</u></p>
+              <p>Дата создания записи - {{ interaction.created_date|date:'d.m.Y' }}</p><hr/>
+            </ul>
+        </li>
+        </ul>
+      {% endif %}
+{% endfor %}
+{% else %}
+<ul><strong><p><font color="red">&#9940; У вас нет доступа к этой странице.</font>
+    Пожалуйста, <u><a href="{% url 'login'%}?next={{request.path}}">войдите</a>
+    </u> в систему с учетной записью, у которой есть доступ.</p></strong></ul>
+{% endif %}
+{% endblock %}

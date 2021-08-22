@@ -1,0 +1,39 @@
+{% extends "base_test.html" %}
+{% block title %}
+<title>Список проектов компании</title>
+{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+<ul>
+    <h3><u><font color="#4C5866">Список проектов компании - </font>
+        <a href="{{ object.get_absolute_url }}"><font color="#ED760E">{{ company.title  }}</a></font></u></h3>
+  <ul><ul class="nav nav-tabs">
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" data-toggle="dropdown"
+       href="#" role="button" aria-haspopup="true" aria-expanded="false">
+        <font color="#4C5866">Фильтр по статусу проекта</font></a>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="/company/{{ company.pk }}/projects_not_started/">Еще не начатые проекты компании</a>
+      <a class="dropdown-item" href="/company/{{ company.pk }}/projects_in_process/">Проекты в процессе разработки компании</a>
+        <a class="dropdown-item" href="/company/{{ company.pk }}/completed/">Выполненные проекты компании</a>
+    </div>
+  </li>
+</ul>
+      <br>
+{% for project in object_list %}
+      <li><h4><strong><a href="/company/project/{{ project.pk }}/"><font color="#4C5866">{{ project.name  }}</font></a></strong></h4></li>
+      <ul>
+          {% if user.is_manager or user.is_admin or user.pk == project.customer.user.pk  %}
+          <p>Стоимость проекта - ${{project.price}}</p>
+          {% endif %}
+          <p>Статус проекта - <u><font color="#228B22">{{ project.status_pro }}</font></u></p>
+      </ul>
+      <hr>
+{% endfor %}
+
+{% else %}
+<ul><strong><p><font color="red">&#9940; У вас нет доступа к этой странице.</font>
+    Пожалуйста, <u><a href="{% url 'login'%}?next={{request.path}}">войдите</a>
+    </u> в систему с учетной записью, у которой есть доступ.</p></strong></ul>
+{% endif %}
+{% endblock %}

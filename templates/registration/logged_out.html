@@ -1,0 +1,9 @@
+{% extends "base_test.html" %}
+
+{% block content %}
+<ul>
+<p><u>Вы вышли!</u></p>
+
+<a href="{% url 'login'%}">Нажмите здесь, чтобы войти снова.</a>
+</ul>
+{% endblock %}

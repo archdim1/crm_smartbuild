@@ -1,0 +1,24 @@
+{% extends "base_test.html" %}
+{% block title %}
+<title>Менеджер CRM "SmartBuild"</title>
+{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+<ul>
+<div class="media">
+  <img class="d-flex mr-3" src="{{ managercrm.user.photo.url }}" width=200 alt="аватарка">
+  <div class="media-body">
+    <h5><u><font color="#228B22">Менеджер CRM "SmartBuild"</font></u></h5>
+    <h4>{{ managercrm.user.first_name }} {{ managercrm.user.last_name }}</h4>
+      <hr>
+      <p>&#9743; Телефон : {{ managercrm.user.phone_number }}</p>
+      <p>&#9993; E-mail : {{ managercrm.user.email }}</p>
+  </div>
+</div>
+</ul>
+{% else %}
+<ul><strong><p><font color="red">&#9940; У вас нет доступа к этой странице.</font>
+    Пожалуйста, <u><a href="{% url 'login'%}?next={{request.path}}">войдите</a>
+    </u> в систему с учетной записью, у которой есть доступ.</p></strong></ul>
+{% endif %}
+{% endblock %}

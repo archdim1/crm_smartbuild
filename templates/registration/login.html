@@ -1,0 +1,38 @@
+{% extends "base_test.html" %}
+
+{% block content %}
+<ul>
+{% if form.errors %}
+  <p><strong><font color="red">Ваше имя пользователя и пароль не совпадают.
+    Пожалуйста, попробуйте еще раз.</font></strong></p>
+{% endif %}
+
+{% if next %}
+  {% if user.is_authenticated %}
+    <p>У вашей учетной записи нет доступа к этой странице. Чтобы продолжить,
+        войдите в систему с учетной записью, у которой есть доступ .</p>
+  {% else %}
+  {% endif %}
+{% endif %}
+<form method="post" action="{% url 'login' %}">
+{% csrf_token %}
+<table>
+  <h4><u><font color="#4C5866">Вход для зарегистрированных пользователей:</font></u></h4><br>
+<tr>
+  <td>{{ form.username.label_tag }}</td>
+  <td>{{ form.username }}</td>
+</tr>
+
+<tr>
+  <td>{{ form.password.label_tag }}</td>
+  <td>{{ form.password }}</td>
+</tr>
+</table>
+<button type="submit" class="btn btn" style="background-color: #4C5866;"><font color="#EFA94A">Войти</font></button>
+<input type="hidden" name="next" value="{{ next }}" />
+</form>
+
+{# Assumes you setup the password_reset view in your URLconf #}
+  <br><p><a href="{% url 'password_reset' %}">Забыли пароль?</a></p>
+</ul>
+{% endblock %}

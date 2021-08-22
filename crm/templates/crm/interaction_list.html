@@ -1,0 +1,42 @@
+{% extends "base_test.html" %}
+{% block title %}
+<title>Список всех взаимодействий</title>
+{% endblock %}
+{% block content %}
+<ul>
+{% if user.is_manager or user.is_admin %}
+    <h3><u><font color="#4C5866">Список всех взаимодействий</font></u></h3>
+<select onchange="window.location.href = this.options[this.selectedIndex].value">
+	<option value="">Сортировка списка взаимодействий</option>
+    <option value="?sort=-created_date">По дате создания(сначала новые)</option>
+    <option value="?sort=created_date">По дате создания(сначала старые)</option>
+	<option value="?sort=project">По проекту</option>
+	<option value="?sort=-project">По проекту в обратном порядке</option>
+    <option value="?sort=channel_of_reference">По каналу связи</option>
+    <option value="?sort=-channel_of_reference">По каналу связи в обратном порядке</option>
+    <option value="?sort=user">По менеджеру</option>
+</select><hr/></p>
+    {% for object in interaction_list %}
+        <ul>
+            <li><h4><strong><a href="/interaction/{{object.pk}}"><font color="#4C5866">{{ object.channel_of_reference }}
+                {{ object.reference_obj }}
+                    {% if object.company %}
+                        - {{ object.company }}
+                    {% endif %}</u></h3>
+            </font></a></strong></h4></li>
+            <ul>
+              <p>&#10000; Проект - {{ object.project }}</p>
+              <p><strong><font color="#ED760E">&#9734;</font></strong> Проект компании - {{ object.project.company }}</p>
+              <p>&#11078; Менеджер - <u>{{ object.user.first_name }} {{ object.user.last_name }}</u></p>
+              <p>Дата создания записи - {{ object.created_date|date:'d.m.Y' }}</p><hr/>
+            </ul>
+        </li>
+        </ul>
+    {% endfor %}
+{% else %}
+<ul><strong><p><font color="red">&#9940; У вас нет доступа к этой странице.</font>
+    Пожалуйста, <u><a href="{% url 'login'%}?next={{request.path}}">войдите</a>
+    </u> в систему с учетной записью, у которой есть доступ.</p></strong></ul>
+{% endif %}
+</ul>
+{% endblock %}

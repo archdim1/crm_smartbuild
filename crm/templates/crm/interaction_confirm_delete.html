@@ -1,0 +1,26 @@
+{% extends "base_test.html" %}
+{% block title %}
+<title>Удалить запись о взаимодействии</title>
+{% endblock %}
+{% block content %}
+<ul>
+{% if user.is_manager and user == interaction.user or user.is_admin%}
+    <h4><u><font color="#4C5866">Удалить запись о взаимодействии</font></u></h4><br>
+<p>Вы уверенны что хотите удалить запись о взаимодействии : <u><font color="#ED760E">
+    {{ interaction.channel_of_reference }} {{ interaction.reference_obj }}
+    {% if interaction.company %}
+        - {{ interaction.company }}
+    {% endif %}?</font></u></p>
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <button type="submit" class="btn btn" style="background-color: #4C5866;"><font color="#EFA94A">Да, удалить</font></button>
+</form>
+
+{% else %}
+<ul><strong><p><font color="red">&#9940; У вас нет доступа к этой странице.</font>
+    Пожалуйста, <u><a href="{% url 'login'%}?next={{request.path}}">войдите</a>
+    </u> в систему с учетной записью, у которой есть доступ.</p></strong></ul>
+{% endif %}
+</ul>
+{% endblock %}

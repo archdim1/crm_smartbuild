@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  {% block title %} {% endblock %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <!-- Добавление дополнительного статического CSS файла -->
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+
+<body>
+
+  <div class="container-fluid">
+    <div class="row">
+        <ul>
+            <h2><strong><a href="{% url 'companies' %}"><font color="green">&#9636; SmartBuild </font></a></strong></h2>
+            <p><font color="green"><i>&#11177;  CRM сайт для ваших строительных проектов </i></font></p>
+        {% block sidebar %}
+            {% if user.is_authenticated %}
+          <ul class="sidebar-nav">
+              {% if user.is_admin %}
+              <li><a href="/admin/">Административная панель</a></li>
+              {% endif %}
+              <li><a href="{% url 'companies' %}">Home (Список компаний)</a></li>
+              <li><a href="{% url 'projects' %}">Список всех проектов</a></li>
+              <li><a href="{% url 'manager_crm_list' %}">Список CRM-менеджеров</a></li>
+              <br>
+            <tr>
+                <td class="leftcol"><img src="{{ user.photo.url }}" class="img-thumbnail"
+                width="50" alt="аватарка"></td>
+                <td valign="top">
+                    <u><strong>  <a href="/user/profile/"><font color="green">{{ user.username }} </font></a></strong></u>
+                </td>
+            </tr>
+              <br><br>
+            <p><a href="/user/profile/">&#8680; Личный кабинет</a></p>
+            <p><a href="{% url 'logout'%}?next={{request.path}}">&#9746; Выход</a></p>
+          {% else %}
+            <p><a href="{% url 'login'%}?next={{request.path}}">&#9745; Вход</a></p>
+            </ul>
+          {% endif %}<hr>
+          {% if user.is_manager or user.is_admin %}
+            <li><a href="{% url 'customer_list' %}">Список всех заказчиков</a></li>
+            <li><a href="{% url 'interactions' %}">Список всех взаимодействий</a></li>
+            <li><a href="{% url 'interaction_create' %}">Создать запись о новом взаимодействии</a></li>
+            <li><a href="{% url 'project_create' %}">Создать запись о новом проекте</a></li>
+            <li><a href="{% url 'company_create' %}">Создать запись о новой компании</a></li><hr/>
+        </ul>
+        <ul>
+          {% endif %}
+        {% endblock %}
+            </ul></ul>
+        {% block content %}
+
+        {% endblock %}
+        </ul>
+        {% block pagination %}
+          {% if is_paginated %}
+              <ul><div class="pagination">
+                  <span class="page-links">
+                      {% if page_obj.has_previous %}
+                          <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">предыдущая</a>
+                      {% endif %}
+                      <span class="page-current">
+                          Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+                      </span>
+                      {% if page_obj.has_next %}
+                          <a href="{{ request.path }}?page={{ page_obj.next_page_number }}{% if current_order %}&sort={{current_order}}{%endif%}">следующая</a>
+                      {% endif %}
+                  </span>
+              </div>
+              </ul>
+          {% endif %}
+        {% endblock %}
+  </div>
+</body>
+</html>

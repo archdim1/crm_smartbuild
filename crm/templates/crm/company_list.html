@@ -1,0 +1,27 @@
+{% extends "base_test.html" %}
+{% block title %}
+<title>Home (Список компаний)</title>
+{% endblock %}
+{% block content %}
+<ul>
+  <h3><u><font color="#4C5866">Список компаний</font></u></h3>
+<select onchange="window.location.href = this.options[this.selectedIndex].value">
+	<option value="">Сортировка списка компаний</option>
+	<option value="?sort=title">По названию</option>
+	<option value="?sort=-title">По названию в обратном порядке</option>
+    {% if user.is_manager or user.is_admin %}
+    <option value="?sort=created_date">По дате создания</option>
+    <option value="?sort=-created_date">По дате создания в обратном порядке</option>
+    {% endif %}
+</select><hr/></p>
+    {% for object in company_list %}
+        <ul>
+            <li><h4><strong><a href="{{ object.get_absolute_url }}"><font color="#4C5866">{{ object.title }}</font></a></strong></h4></li>
+            <ul>
+              <li>{{ object.description|safe }}</li><hr/>
+            </ul>
+        </li>
+        </ul>
+    {% endfor %}
+</ul>
+{% endblock %}

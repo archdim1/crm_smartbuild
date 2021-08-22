@@ -1,0 +1,28 @@
+{% extends "base_test.html" %}
+{% block title %}
+<title>Редактировать личную информацию</title>
+{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+<ul>
+    <h4><u><font color="#4C5866">Редактировать личную информацию</font></u></h4>
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table>
+    {{ form.text | safe }}
+    {{ form.media }}
+    {{ form.as_table }}
+    <br/><br>
+    {{ managercrm_formset }}
+    </table>
+    <button type="submit" class="btn btn" style="background-color: #4C5866;"><font color="#EFA94A">Сохранить</font></button>
+    <hr>
+
+</form>
+</ul>
+{% else %}
+<ul><strong><p><font color="red">&#9940; У вас нет доступа к этой странице.</font>
+    Пожалуйста, <u><a href="{% url 'login'%}?next={{request.path}}">войдите</a>
+    </u> в систему с учетной записью, у которой есть доступ.</p></strong></ul>
+{% endif %}
+{% endblock %}

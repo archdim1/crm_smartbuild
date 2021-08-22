@@ -1,0 +1,25 @@
+{% extends "base_test.html" %}
+{% block title %}
+<title>Заказчик проектов</title>
+{% endblock %}
+{% block content %}
+{% if user.is_manager or user.is_admin or user == customer.user %}
+<ul>
+<div class="media">
+  <img class="d-flex mr-3" src="{{ customer.user.photo.url }}" width=200 alt="аватарка">
+  <div class="media-body">
+    <h5><u><font color="#228B22">Заказчик проектов</font></u></h5>
+    <h4>{{ customer.user.first_name }} {{ customer.user.last_name }}</h4>
+      <hr>
+      <p>&#9743; Телефон : {{ customer.user.phone_number }}</p>
+      <p>&#9993; E-mail : {{ customer.user.email }}</p>
+  </div>
+</div>
+</ul>
+{% else %}
+<ul><strong><p><font color="red">&#9940; У вас нет доступа к этой странице.</font>
+    Пожалуйста, <u><a href="{% url 'login'%}?next={{request.path}}">войдите</a>
+    </u> в систему с учетной записью, у которой есть доступ.</p></strong></ul>
+{% endif %}
+</ul>
+{% endblock %}
