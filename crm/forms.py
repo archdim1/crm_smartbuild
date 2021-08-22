@@ -11,7 +11,7 @@ class CompanyModelForm(forms.ModelForm):
     """
     class Meta:
         """
-        Отобраает поля из модели в форме.
+        Отображает поля из модели в форме.
         """
         model = Company
         fields = '__all__'
@@ -50,7 +50,7 @@ class ProjectModelForm(forms.ModelForm):
 
     class Meta:
         """
-        Отобраает поля из модели в форме.
+        Отображает поля из модели в форме.
         """
         model = Project
         fields = ['company', 'name', 'description', 'start_date', 'end_date', 'price']
@@ -90,7 +90,7 @@ class UserModelForm(forms.ModelForm):
 
     class Meta:
         """
-        Отобраает поля из модели в форме.
+        Отображает поля из модели в форме.
         """
         model = User
         fields = ['photo', 'username', 'first_name', 'last_name', 'email', 'phone_number']
