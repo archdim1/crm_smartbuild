@@ -1,5 +1,8 @@
 from django.contrib import admin
+
+
 from .models import Company, Phone, Email, Manager, User, Project, Interaction, Customer, ManagerCRM
+from django.contrib.auth.admin import UserAdmin
 
 
 class PhoneInline(admin.TabularInline):
@@ -38,9 +41,21 @@ class ManagerCRMInLine(admin.TabularInline):
 
 
 @admin.register(User)
-class UserAdmin(admin.ModelAdmin):
+class UserAdmin(UserAdmin):
     list_display = ('username', 'first_name', 'last_name', 'is_admin', 'is_manager', 'is_customer',)
     inlines = [ManagerCRMInLine, CustomerInLine]
+
+    fieldsets = (
+        *UserAdmin.fieldsets,  # original form fieldsets, expanded
+        (                      # new fieldset added on to the bottom
+            'Дополнительная информация',  # group heading of your choice; set to None for a blank space instead of a header
+            {
+                'fields': (
+                    'phone_number', 'photo', 'is_manager', 'is_customer', 'is_admin',
+                ),
+            },
+        ),
+    )
 
 
 @admin.register(Company)
@@ -83,3 +98,5 @@ class CustomerAdmin(admin.ModelAdmin):
 @admin.register(ManagerCRM)
 class ManagerCRMAdmin(admin.ModelAdmin):
     list_display = ('user', 'name')
+
+
