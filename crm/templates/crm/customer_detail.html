@@ -6,7 +6,11 @@
 {% if user.is_manager or user.is_admin or user == customer.user %}
 <ul>
 <div class="media">
+    {% if customer.user.photo %}
   <img class="d-flex mr-3" src="{{ customer.user.photo.url }}" width=200 alt="аватарка">
+    {% else %}
+      <img class="d-flex mr-3" src="/media/default1.jpg" width=200 alt="аватарка">
+    {% endif %}
   <div class="media-body">
     <h5><u><font color="#228B22">Заказчик проектов</font></u></h5>
     <h4>{{ customer.user.first_name }} {{ customer.user.last_name }}</h4>

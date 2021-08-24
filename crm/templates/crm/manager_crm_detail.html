@@ -6,7 +6,11 @@
 {% if user.is_authenticated %}
 <ul>
 <div class="media">
+    {% if managercrm.user.photo %}
   <img class="d-flex mr-3" src="{{ managercrm.user.photo.url }}" width=200 alt="аватарка">
+    {% else %}
+      <img class="d-flex mr-3" src="/media/default1.jpg" width=200 alt="аватарка">
+    {% endif %}
   <div class="media-body">
     <h5><u><font color="#228B22">Менеджер CRM "SmartBuild"</font></u></h5>
     <h4>{{ managercrm.user.first_name }} {{ managercrm.user.last_name }}</h4>
